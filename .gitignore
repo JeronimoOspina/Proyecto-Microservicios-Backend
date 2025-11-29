@@ -1,0 +1,26 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.log
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json  # Opcional: Para tareas académicas suelo recomendar subirlo.
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.pytest_cache/
+target/
+*.class
+bin/
+obj/

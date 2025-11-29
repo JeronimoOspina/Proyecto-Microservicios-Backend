@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  # BASE DE DATOS
+  db:
+    image: mysql:8.0
+    container_name: genosentinel-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: clinica
+    ports:
+      - "3307:3306" 
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # MICROSERVICIO 1 jeronimo
+  clinica:
+    build: ./Microservicio-1--Clinica
+    container_name: microservicio-clinica
+    ports:
+      - "8001:8001" 
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "mysql+pymysql://root:root@db:3306/clinica"
+
+  # MICROSERVICIO 2 samuel
+  genomica:
+    build: ./Microservicio-2--Genómica
+    container_name: microservicio-genomica
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - clinica
+    environment:
+      PORT: 3001
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: clinica
+      DB_PORT: 3306
+      CLINIC_SERVICE_URL: http://clinica:8001/api/v1 
+
+volumes:
+  db_data:

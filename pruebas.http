@@ -1,0 +1,49 @@
+### 1. crear paciente en python (puerto 8001)
+POST http://localhost:8001/api/v1/pacientes/
+Content-Type: application/json
+
+{
+  "first_name": "Samuel",
+  "last_name": "Gomez",
+  "birth_date": "1998-05-20",
+  "gender": "Masculino"
+}
+
+### 2. verificar que el personaje existe
+GET http://localhost:8001/api/v1/pacientes/1
+
+### 2.5 crear un Gen de Interés 
+
+POST http://localhost:3001/api/v1/genomics/genes
+Content-Type: application/json
+
+{
+  "symbol": "BRCA1",
+  "fullName": "Breast Cancer 1",
+  "functionSummary": "DNA repair gene"
+}
+
+### 3. crear variante genética en genomica (puerto 3001)
+POST http://localhost:3001/api/v1/genomics/variants
+Content-Type: application/json
+
+{
+  "geneId": 1,
+  "chromosome": "chr17",
+  "position": 5000,
+  "referenceBase": "A",
+  "alternateBase": "T",
+  "impact": "High"
+}
+
+### 4.  Crear Reporte (Node llama a Python). se tiene que poneren variantId el ID de la persona que recogimos en la tercera prueba
+# Si esto funciona, verás los datos de Samuel dentro de la respuesta de Node.
+POST http://localhost:3001/api/v1/genomics/reports
+Content-Type: application/json
+
+
+{
+  "patientId": 1,
+  "variantId": "4bf4d763-b15c-4530-91c5-c2144cc26145", 
+  "alleleFrequency": 0.55
+}
