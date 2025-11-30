@@ -11,7 +11,7 @@ const Variant = sequelize.define('Variant', {
     impact: { type: DataTypes.STRING }
 });
 
-// Relación: Una variante pertenece a un Gen
+
 Variant.belongsTo(Gene, { foreignKey: 'geneId' });
 Gene.hasMany(Variant, { foreignKey: 'geneId' });
 

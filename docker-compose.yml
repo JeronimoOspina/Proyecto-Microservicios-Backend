@@ -4,7 +4,7 @@ services:
   # BASE DE DATOS
   db:
     image: mysql:8.0
-    container_name: genosentinel-db
+    container_name: sentinel-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -20,7 +20,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
-  # MICROSERVICIO 1 jeronimo
+  # MICROSERVICIO 1 - Clínica
   clinica:
     build: ./Microservicio-1--Clinica
     container_name: microservicio-clinica
@@ -32,7 +32,7 @@ services:
     environment:
       DATABASE_URL: "mysql+pymysql://root:root@db:3306/clinica"
 
-  # MICROSERVICIO 2 samuel
+  # MICROSERVICIO 2 - Genómica
   genomica:
     build: ./Microservicio-2--Genómica
     container_name: microservicio-genomica
@@ -49,6 +49,20 @@ services:
       DB_NAME: clinica
       DB_PORT: 3306
       CLINIC_SERVICE_URL: http://clinica:8001/api/v1 
+
+  # API GATEWAY - Go
+  gateway:
+    build: ./Microservicio-3--Autenticacion
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - clinica
+      - genomica
+    environment:
+      JWT_SECRET: mi_secreto_super_seguro
+      CLINIC_SERVICE_URL: http://clinica:8001/api/v1
+      GENOMICS_SERVICE_URL: http://genomica:3001/api/v1/genomics
 
 volumes:
   db_data:
