@@ -11,10 +11,11 @@ class PacienteCreateDTO(BaseModel):
 
 
 class PacienteUpdateDTO(BaseModel):
-    first_name: Optional[str]
-    last_name: Optional[str]
-    gender: Optional[str]
-    status: Optional[str]
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    gender: Optional[str] = None
+    status: Optional[str] = None
+
 
 
 class PacienteResponseDTO(PacienteCreateDTO):

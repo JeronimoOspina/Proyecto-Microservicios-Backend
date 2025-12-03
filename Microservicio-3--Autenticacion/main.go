@@ -67,10 +67,6 @@ func main() {
 	r.Run(":8080")
 }
 
-// ======================
-// HANDLERS
-// ======================
-
 func loginHandler(c *gin.Context) {
 	type LoginRequest struct {
 		Email string `json:"email"`
@@ -130,9 +126,6 @@ func authMiddleware() gin.HandlerFunc {
 	}
 }
 
-// ======================
-// PROXY
-// ======================
 
 func clinicProxy(c *gin.Context, prefix string) {
 	path := c.Param("path")
